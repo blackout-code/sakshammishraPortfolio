@@ -1,6 +1,8 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  output: "export",
+  
   // Compression and optimization
   compress: true,
   productionBrowserSourceMaps: false,
