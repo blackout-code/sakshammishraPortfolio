@@ -2,6 +2,7 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   output: "export",
+  basePath: "/sakshammishraPortfolio",
   
   // Compression and optimization
   compress: true,
