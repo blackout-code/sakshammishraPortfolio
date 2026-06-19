@@ -7,7 +7,6 @@ const nextConfig: NextConfig = {
   // Compression and optimization
   compress: true,
   productionBrowserSourceMaps: false,
-  swcMinify: true,
   
   // Image optimization
   images: {
