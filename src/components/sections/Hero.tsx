@@ -36,7 +36,6 @@ export function Hero() {
           >
             <span className="inline-flex items-center gap-2.5 rounded-full border border-white/[0.08] bg-white/[0.035] px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.14em] text-text-secondary shadow-glass backdrop-blur-xl">
               <span className="relative flex h-2 w-2">
-                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-accent opacity-40" />
                 <span className="relative inline-flex h-2 w-2 rounded-full bg-accent" />
               </span>
               {personalInfo.status === "available" ? "Available for new opportunities" : "Open to work"}
@@ -55,7 +54,7 @@ export function Hero() {
             </div>
             <h1 className="font-display text-5xl font-bold leading-[1.02] -tracking-[0.035em] text-text-primary sm:text-6xl lg:text-7xl xl:text-8xl">
               <span className="block">{personalInfo.name}</span>
-              <span className="mt-2 block bg-gradient-to-r from-primary via-violet-accent to-accent bg-[length:200%_100%] text-gradient animate-gradient-shift">
+              <span className="mt-2 block bg-gradient-to-r from-primary via-violet-accent to-accent bg-[length:200%_100%] text-gradient bg-clip-text">
                 {personalInfo.role}
               </span>
             </h1>
@@ -78,19 +77,18 @@ export function Hero() {
           >
             <a
               href="#projects"
-              className="group relative inline-flex min-h-12 items-center justify-center gap-2.5 overflow-hidden rounded-lg bg-primary px-7 py-3 text-sm font-semibold text-white transition-all duration-300 hover:shadow-glow active:scale-[0.98]"
+              className="group relative inline-flex min-h-12 items-center justify-center gap-2.5 overflow-hidden rounded-lg bg-primary px-7 py-3 text-sm font-semibold text-white transition-colors duration-300 hover:shadow-glow active:scale-[0.98]"
             >
               <span className="relative z-10">View Projects</span>
-              <ArrowUpRight size={16} className="relative z-10 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+              <ArrowUpRight size={16} className="relative z-10 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
               <span className="absolute inset-0 bg-gradient-to-r from-primary-hover to-primary opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
-              <span className="absolute inset-0 -translate-x-full skew-x-[-20deg] bg-gradient-to-r from-transparent via-white/10 to-transparent transition-transform duration-700 group-hover:translate-x-full" />
             </a>
             <a
               href={personalInfo.resumeUrl}
-              className="group inline-flex min-h-12 items-center justify-center gap-2.5 rounded-lg border border-white/[0.08] bg-white/[0.02] px-7 py-3 text-sm font-semibold text-text-secondary transition-all duration-300 hover:border-white/[0.14] hover:bg-white/[0.05] hover:text-text-primary active:scale-[0.98]"
+              className="group inline-flex min-h-12 items-center justify-center gap-2.5 rounded-lg border border-white/[0.08] bg-white/[0.02] px-7 py-3 text-sm font-semibold text-text-secondary transition-colors duration-300 hover:border-white/[0.14] hover:bg-white/[0.05] hover:text-text-primary active:scale-[0.98]"
             >
               <span>View Resume</span>
-              <Download size={16} className="transition-transform group-hover:translate-y-0.5" />
+              <Download size={16} className="transition-transform duration-300 group-hover:translate-y-0.5" />
             </a>
           </motion.div>
 

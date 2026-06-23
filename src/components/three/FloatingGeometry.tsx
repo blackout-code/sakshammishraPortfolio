@@ -23,20 +23,19 @@ function GeodesicGlobe({ mouse }: { mouse: React.MutableRefObject<{ x: number; y
     meshRef.current.position.y = Math.sin(t * 0.3) * 0.2;
 
     if (glowRef.current) {
-      glowRef.current.rotation.copy(meshRef.current.rotation);
       glowRef.current.position.y = meshRef.current.position.y;
     }
   });
 
   return (
     <group>
-      <mesh ref={glowRef} scale={1.65}>
-        <icosahedronGeometry args={[1, 1]} />
-        <meshBasicMaterial color="#6366f1" transparent opacity={0.04} />
-      </mesh>
       <mesh ref={meshRef} scale={1.2}>
         <icosahedronGeometry args={[1, 1]} />
         <meshBasicMaterial color="#6366f1" wireframe transparent opacity={0.5} />
+      </mesh>
+      <mesh ref={glowRef} scale={1.65}>
+        <icosahedronGeometry args={[1, 1]} />
+        <meshBasicMaterial color="#6366f1" transparent opacity={0.04} />
       </mesh>
     </group>
   );
@@ -81,11 +80,7 @@ function LightRays() {
 
   const rays = Array.from({ length: 8 }, (_, i) => {
     const angle = (i / 8) * Math.PI * 2;
-    return {
-      x: Math.cos(angle) * 2.8,
-      y: Math.sin(angle) * 2.8,
-      angle,
-    };
+    return { x: Math.cos(angle) * 2.8, y: Math.sin(angle) * 2.8, angle };
   });
 
   return (
@@ -106,9 +101,11 @@ export function HeroScene() {
 
   useEffect(() => {
     if (typeof window === "undefined") return;
+    const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const throttle = prefersReduced ? 8 : 2;
     const handleMouseMove = (e: MouseEvent) => {
       frameRef.current++;
-      if (frameRef.current % 2 !== 0) return;
+      if (frameRef.current % throttle !== 0) return;
       mouseRef.current.x = (e.clientX / window.innerWidth - 0.5) * 2;
       mouseRef.current.y = (e.clientY / window.innerHeight - 0.5) * 2;
     };

@@ -21,25 +21,31 @@ export function Navbar() {
   const [activeSection, setActiveSection] = useState("home");
   const [scrolled, setScrolled] = useState(false);
   const lastScrollY = useRef(0);
+  const ticking = useRef(false);
 
   useEffect(() => {
     const handleScroll = () => {
-      const currentY = window.scrollY;
-      setIsVisible(currentY < lastScrollY.current || currentY < 100);
-      lastScrollY.current = currentY;
-      setScrolled(currentY > 20);
+      if (ticking.current) return;
+      ticking.current = true;
+      requestAnimationFrame(() => {
+        const currentY = window.scrollY;
+        setIsVisible(currentY < lastScrollY.current || currentY < 100);
+        lastScrollY.current = currentY;
+        setScrolled(currentY > 20);
 
-      const sections = navItems.map((item) => item.href.slice(1));
-      for (let i = sections.length - 1; i >= 0; i--) {
-        const el = document.getElementById(sections[i]);
-        if (el) {
-          const rect = el.getBoundingClientRect();
-          if (rect.top <= 200) {
-            setActiveSection(sections[i]);
-            break;
+        const sections = navItems.map((item) => item.href.slice(1));
+        for (let i = sections.length - 1; i >= 0; i--) {
+          const el = document.getElementById(sections[i]);
+          if (el) {
+            const rect = el.getBoundingClientRect();
+            if (rect.top <= 200) {
+              setActiveSection(sections[i]);
+              break;
+            }
           }
         }
-      }
+        ticking.current = false;
+      });
     };
 
     window.addEventListener("scroll", handleScroll, { passive: true });
@@ -70,14 +76,13 @@ export function Navbar() {
       >
         <div className="mx-auto max-w-7xl px-4 sm:px-6">
           <div
-            className={`mt-4 rounded-2xl px-5 py-2.5 transition-all duration-500 ${
+            className={`mt-4 rounded-2xl px-5 py-2.5 transition-colors duration-500 ${
               scrolled
                 ? "bg-black/70 backdrop-blur-2xl border border-white/[0.06] shadow-glass-xl"
                 : "bg-transparent"
             }`}
           >
             <nav className="flex items-center justify-between">
-              {/* Logo */}
               <a
                 href="#home"
                 onClick={(e) => {
@@ -97,7 +102,6 @@ export function Navbar() {
                 <span className="hidden sm:inline text-xs text-text-tertiary font-mono">engineer</span>
               </a>
 
-              {/* Desktop nav */}
               <ul className="hidden lg:flex items-center gap-1">
                 {navItems.map((item) => (
                   <li key={item.href}>
@@ -123,10 +127,9 @@ export function Navbar() {
                 ))}
               </ul>
 
-              {/* Resume CTA */}
               <a
                 href={personalInfo.resumeUrl}
-                className="hidden lg:inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-primary/10 text-primary text-xs font-semibold hover:bg-primary/20 transition-all duration-300 border border-primary/20"
+                className="hidden lg:inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-primary/10 text-primary text-xs font-semibold hover:bg-primary/20 transition-colors duration-300 border border-primary/20"
               >
                 <span>Resume</span>
                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
@@ -134,7 +137,6 @@ export function Navbar() {
                 </svg>
               </a>
 
-              {/* Mobile menu button */}
               <button
                 type="button"
                 onClick={() => setIsOpen(!isOpen)}
@@ -150,7 +152,6 @@ export function Navbar() {
         </div>
       </motion.header>
 
-      {/* Mobile menu */}
       <AnimatePresence>
         {isOpen && (
           <motion.div
@@ -181,7 +182,7 @@ export function Navbar() {
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: i * 0.05 }}
                     onClick={() => handleClick(item.href)}
-                    className={`w-full text-left px-4 py-3.5 rounded-xl text-sm font-medium transition-all duration-200 ${
+                    className={`w-full text-left px-4 py-3.5 rounded-xl text-sm font-medium transition-colors duration-200 ${
                       activeSection === item.href.slice(1)
                         ? "bg-white/[0.08] text-text-primary border border-white/[0.06]"
                         : "text-text-secondary hover:text-text-primary hover:bg-white/[0.04]"
@@ -194,7 +195,7 @@ export function Navbar() {
               <div className="p-4 border-t border-white/[0.06]">
                 <a
                   href={personalInfo.resumeUrl}
-                  className="flex items-center justify-center gap-2 w-full px-4 py-3 rounded-xl bg-primary/10 text-primary text-sm font-semibold hover:bg-primary/20 transition-all duration-300 border border-primary/20"
+                  className="flex items-center justify-center gap-2 w-full px-4 py-3 rounded-xl bg-primary/10 text-primary text-sm font-semibold hover:bg-primary/20 transition-colors duration-300 border border-primary/20"
                 >
                   <span>Download Resume</span>
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
