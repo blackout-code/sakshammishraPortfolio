@@ -3,7 +3,7 @@
 import { useRef, useState } from "react";
 import { motion, useInView } from "framer-motion";
 import { architectureProjects } from "@/lib/data";
-import { staggerContainer, fadeUp, sectionHeader } from "@/lib/animations";
+import { staggerContainer, sectionHeader } from "@/lib/animations";
 import { Server, Shield, BarChart3, ArrowUpRight } from "lucide-react";
 
 const diagramIcons: Record<string, React.ComponentType<{ size?: number; className?: string }>> = {
@@ -19,13 +19,14 @@ function ArchitectureCard({
   item: (typeof architectureProjects)[0];
   index: number;
 }) {
-  const ref = useRef<HTMLDivElement>(null);
+  const ref = useRef<HTMLButtonElement>(null);
   const isInView = useInView(ref, { once: true, margin: "-80px" });
   const [isExpanded, setIsExpanded] = useState(false);
   const Icon = diagramIcons[item.diagram] || Server;
 
   return (
-    <motion.div
+    <motion.button
+      type="button"
       ref={ref}
       initial={{ opacity: 0, y: 50 }}
       animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
@@ -34,8 +35,9 @@ function ArchitectureCard({
         delay: index * 0.15,
         ease: [0.22, 1, 0.36, 1],
       }}
-      className="glass-card-bordered rounded-2xl overflow-hidden group cursor-pointer"
+      className="glass-card-bordered group w-full cursor-pointer overflow-hidden rounded-2xl text-left shadow-glass"
       onClick={() => setIsExpanded(!isExpanded)}
+      aria-expanded={isExpanded}
     >
       <div className="relative p-6 sm:p-8">
         {/* Background gradient */}
@@ -91,7 +93,7 @@ function ArchitectureCard({
           </div>
         </div>
       </div>
-    </motion.div>
+    </motion.button>
   );
 }
 
@@ -100,9 +102,9 @@ export function Architecture() {
   const isInView = useInView(ref, { once: true, margin: "-100px" });
 
   return (
-    <section id="architecture" ref={ref} className="relative section-spacing">
-      {/* Background connector */}
-      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-violet-accent/[0.015] to-transparent pointer-events-none" />
+    <section id="architecture" ref={ref} className="relative -mt-8 section-spacing sm:-mt-12">
+      <div className="pointer-events-none absolute inset-x-0 -top-44 h-96 bg-gradient-to-b from-transparent via-violet-accent/[0.022] to-transparent blur-2xl" />
+      <div className="pointer-events-none absolute left-[-14rem] top-1/3 h-[32rem] w-[32rem] rounded-full bg-primary/[0.028] blur-[130px]" />
 
       <div className="section-container">
         {/* Section header */}
@@ -117,7 +119,7 @@ export function Architecture() {
             Architecture &{" "}
             <span className="text-gradient">System Design</span>
           </h2>
-          <p className="mt-6 max-w-xl mx-auto text-text-secondary text-base">
+          <p className="mt-5 max-w-2xl text-base text-text-secondary">
             Architectural decisions and system designs that have shaped enterprise-scale backend platforms 
             and integration ecosystems.
           </p>
@@ -128,7 +130,7 @@ export function Architecture() {
           variants={staggerContainer}
           initial="hidden"
           animate={isInView ? "visible" : "hidden"}
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+          className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3 sm:gap-6"
         >
           {architectureProjects.map((item, index) => (
             <ArchitectureCard key={item.title} item={item} index={index} />

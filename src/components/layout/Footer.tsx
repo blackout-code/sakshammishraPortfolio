@@ -9,6 +9,8 @@ const footerNavItems = [
   { label: "Skills", href: "#skills" },
   { label: "Experience", href: "#experience" },
   { label: "Projects", href: "#projects" },
+  { label: "Architecture", href: "#architecture" },
+  { label: "Certifications", href: "#certifications" },
   { label: "Contact", href: "#contact" },
 ];
 
@@ -18,7 +20,7 @@ export function Footer() {
   };
 
   return (
-    <footer className="relative border-t border-white/[0.04] pt-16 pb-8">
+    <footer className="relative border-t border-white/[0.04] bg-background/30 pt-16 pb-8 backdrop-blur-sm">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col items-center gap-10">
           {/* Logo */}
@@ -33,12 +35,12 @@ export function Footer() {
           </div>
 
           {/* Navigation */}
-          <nav className="flex flex-wrap justify-center gap-x-8 gap-y-2">
+          <nav className="flex flex-wrap justify-center gap-x-6 gap-y-2 sm:gap-x-8" aria-label="Footer navigation">
             {footerNavItems.map((item) => (
               <a
                 key={item.href}
                 href={item.href}
-                className="text-sm text-text-tertiary hover:text-text-secondary transition-colors duration-200"
+                className="rounded-md px-1 text-sm text-text-tertiary transition-colors duration-200 hover:text-text-secondary"
               >
                 {item.label}
               </a>
@@ -46,7 +48,7 @@ export function Footer() {
           </nav>
 
           {/* Bottom bar */}
-          <div className="w-full pt-8 border-t border-white/[0.04] flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div className="w-full pt-8 border-t border-white/[0.04] flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left">
             <p className="text-xs text-text-quaternary">
               &copy; {new Date().getFullYear()} {personalInfo.name}. All rights reserved.
             </p>
@@ -56,6 +58,7 @@ export function Footer() {
                 Built with Next.js, Tailwind CSS & Framer Motion
               </p>
               <button
+                type="button"
                 onClick={scrollToTop}
                 className="group p-2 rounded-lg text-text-quaternary hover:text-text-primary hover:bg-white/[0.04] transition-all duration-200 border border-white/[0.04] hover:border-white/[0.08]"
                 aria-label="Scroll to top"

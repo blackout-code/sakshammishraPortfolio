@@ -1,8 +1,9 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X } from "lucide-react";
+import { personalInfo } from "@/lib/data";
 
 const navItems = [
   { label: "Home", href: "#home" },
@@ -17,18 +18,17 @@ const navItems = [
 export function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
-  const [lastScrollY, setLastScrollY] = useState(0);
   const [activeSection, setActiveSection] = useState("home");
   const [scrolled, setScrolled] = useState(false);
+  const lastScrollY = useRef(0);
 
   useEffect(() => {
     const handleScroll = () => {
       const currentY = window.scrollY;
-      setIsVisible(currentY < lastScrollY || currentY < 100);
-      setLastScrollY(currentY);
+      setIsVisible(currentY < lastScrollY.current || currentY < 100);
+      lastScrollY.current = currentY;
       setScrolled(currentY > 20);
 
-      // Detect active section
       const sections = navItems.map((item) => item.href.slice(1));
       for (let i = sections.length - 1; i >= 0; i--) {
         const el = document.getElementById(sections[i]);
@@ -43,8 +43,16 @@ export function Navbar() {
     };
 
     window.addEventListener("scroll", handleScroll, { passive: true });
+    handleScroll();
     return () => window.removeEventListener("scroll", handleScroll);
-  }, [lastScrollY]);
+  }, []);
+
+  useEffect(() => {
+    document.body.style.overflow = isOpen ? "hidden" : "";
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [isOpen]);
 
   const handleClick = (href: string) => {
     setIsOpen(false);
@@ -76,7 +84,7 @@ export function Navbar() {
                   e.preventDefault();
                   handleClick("#home");
                 }}
-                className="group flex items-center gap-2.5"
+                className="group flex items-center gap-2.5 rounded-lg focus-visible:outline-offset-4"
               >
                 <div className="relative w-8 h-8 rounded-lg bg-gradient-to-br from-primary to-violet-accent flex items-center justify-center overflow-hidden">
                   <span className="text-xs font-bold text-white font-display">SM</span>
@@ -90,10 +98,11 @@ export function Navbar() {
               </a>
 
               {/* Desktop nav */}
-              <ul className="hidden md:flex items-center gap-1">
+              <ul className="hidden lg:flex items-center gap-1">
                 {navItems.map((item) => (
                   <li key={item.href}>
                     <button
+                      type="button"
                       onClick={() => handleClick(item.href)}
                       className={`relative px-3.5 py-2 text-sm font-medium rounded-lg transition-colors duration-200 ${
                         activeSection === item.href.slice(1)
@@ -116,8 +125,8 @@ export function Navbar() {
 
               {/* Resume CTA */}
               <a
-                href="#"
-                className="hidden md:inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-primary/10 text-primary text-xs font-semibold hover:bg-primary/20 transition-all duration-300 border border-primary/20"
+                href={personalInfo.resumeUrl}
+                className="hidden lg:inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-primary/10 text-primary text-xs font-semibold hover:bg-primary/20 transition-all duration-300 border border-primary/20"
               >
                 <span>Resume</span>
                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
@@ -127,9 +136,12 @@ export function Navbar() {
 
               {/* Mobile menu button */}
               <button
+                type="button"
                 onClick={() => setIsOpen(!isOpen)}
-                className="md:hidden p-2 text-text-secondary hover:text-text-primary transition-colors"
+                className="lg:hidden p-2 text-text-secondary hover:text-text-primary transition-colors"
                 aria-label={isOpen ? "Close menu" : "Open menu"}
+                aria-expanded={isOpen}
+                aria-controls="mobile-navigation"
               >
                 {isOpen ? <X size={20} /> : <Menu size={20} />}
               </button>
@@ -146,13 +158,14 @@ export function Navbar() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.2 }}
-            className="fixed inset-0 z-40 flex items-start justify-center pt-24 md:hidden"
+            className="fixed inset-0 z-40 flex items-start justify-center pt-24 lg:hidden"
           >
             <div
               className="absolute inset-0 bg-black/70 backdrop-blur-sm"
               onClick={() => setIsOpen(false)}
             />
             <motion.nav
+              id="mobile-navigation"
               initial={{ scale: 0.95, opacity: 0, y: -20 }}
               animate={{ scale: 1, opacity: 1, y: 0 }}
               exit={{ scale: 0.95, opacity: 0, y: -20 }}
@@ -163,6 +176,7 @@ export function Navbar() {
                 {navItems.map((item, i) => (
                   <motion.button
                     key={item.href}
+                    type="button"
                     initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: i * 0.05 }}
@@ -179,7 +193,7 @@ export function Navbar() {
               </div>
               <div className="p-4 border-t border-white/[0.06]">
                 <a
-                  href="#"
+                  href={personalInfo.resumeUrl}
                   className="flex items-center justify-center gap-2 w-full px-4 py-3 rounded-xl bg-primary/10 text-primary text-sm font-semibold hover:bg-primary/20 transition-all duration-300 border border-primary/20"
                 >
                   <span>Download Resume</span>

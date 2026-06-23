@@ -12,12 +12,6 @@ const easingSpring = {
   mass: 1,
 };
 
-const easingBounce = {
-  type: "spring" as const,
-  stiffness: 300,
-  damping: 15,
-};
-
 /* ─── Container Stagger ─── */
 export const staggerContainer: Variants = {
   hidden: {},

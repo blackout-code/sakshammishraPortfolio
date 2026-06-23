@@ -18,9 +18,9 @@ export function Certifications() {
   const isInView = useInView(ref, { once: true, margin: "-100px" });
 
   return (
-    <section id="certifications" ref={ref} className="relative section-spacing">
-      {/* Background connector */}
-      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-primary/[0.015] to-transparent pointer-events-none" />
+    <section id="certifications" ref={ref} className="relative -mt-8 section-spacing sm:-mt-12">
+      <div className="pointer-events-none absolute inset-x-0 -top-44 h-96 bg-gradient-to-b from-transparent via-primary/[0.02] to-transparent blur-2xl" />
+      <div className="pointer-events-none absolute right-[-14rem] top-1/4 h-[30rem] w-[30rem] rounded-full bg-accent/[0.028] blur-[130px]" />
 
       <div className="section-container">
         {/* Section header */}
@@ -35,7 +35,7 @@ export function Certifications() {
             Certifications &{" "}
             <span className="text-gradient">Accreditations</span>
           </h2>
-          <p className="mt-6 max-w-xl mx-auto text-text-secondary text-base">
+          <p className="mt-5 max-w-2xl text-base text-text-secondary">
             Industry-recognized certifications validating expertise in cloud architecture, 
             backend engineering, and enterprise development.
           </p>
@@ -46,15 +46,15 @@ export function Certifications() {
           variants={staggerContainer}
           initial="hidden"
           animate={isInView ? "visible" : "hidden"}
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5"
+          className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3 sm:gap-6"
         >
-          {certifications.map((cert, index) => {
+          {certifications.map((cert) => {
             const Icon = iconMap[cert.icon] || Code2;
             return (
               <motion.div
                 key={cert.name}
                 variants={fadeUp}
-                className="glass-card rounded-2xl overflow-hidden group"
+                className="glass-card group overflow-hidden rounded-2xl shadow-glass"
               >
                 <div className="relative p-6 sm:p-7">
                   {/* Gradient background */}
